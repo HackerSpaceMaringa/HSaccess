@@ -56,7 +56,7 @@ with open(page_to_break, 'r') as content_file:
 			result_file.write(webpage[first:last])
 			result_file.write(" ]] \n")
 		webpages = webpages[:-1]
-		result_file.write("local response = {")
+		result_file.write("response = {")
 		result_file.write(webpages)
 		result_file.write("}")
 		
