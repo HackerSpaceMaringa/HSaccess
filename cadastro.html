@@ -96,6 +96,7 @@ define(function(){return x}):"undefined"!==typeof exports?("undefined"!==typeof 
 var senhaRuim = x => false //colocar uma comparação com dicionário e tamnhano mínimo
 
 function check(form) {
+  //não deixar senhas com "," no usuário
 
   if(!(form.pass.value == form.passRep.value) ){
     alert("Senhas diferentes")
@@ -124,7 +125,9 @@ function check(form) {
   hash = shaObj.getHash("HEX"); //obter o server-side hash
   
   alert("Cadastro realizado")
-  document.getElementById("result").innerHTML = JSON.stringify({user:form.user.value,salt:salt,hash:hash});
+  document.getElementById("result").innerHTML = form.user.value+","+salt+","+hash+"\n"
+  //se quiser soltar um JSON
+  //document.getElementById("result").innerHTML = JSON.stringify({user:});
   }
   
 </script>
