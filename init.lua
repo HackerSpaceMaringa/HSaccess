@@ -1,17 +1,9 @@
 
+dofile("aux.lua")
 dofile("mobile.lua") -- where the mobile webpage is stored in many parts
-
-function listap(t)
-    for k,v in pairs(t) do
-        print(k.." : "..v)
-    end
-end
-
-
 
 set = wifi.setmode(wifi.STATION)
 wifi.sta.disconnect()
-
 
 -- this part is only used the first time you need to connect to a network
 --station_cfg={}    
@@ -80,12 +72,9 @@ function connection(conn)
         end
           
         if((_GET["user"] ~= nil) and (_GET["pass"] ~= nil)) then
-          print(_GET["user"])
-          print(_GET["pass"])
           local user = _GET["user"]
+          local pass = _GET["pass"]
           if (user == "jair") then
-            print("inside")
-            print(tmr.state(5))
             if (nil == tmr.state(5)) then
               tmr.alarm(5, 100, 1, function() gpio.write(pin,gpio.HIGH) tmr.delay(pl) gpio.write(pin,gpio.LOW) end)
             end
@@ -99,6 +88,19 @@ function connection(conn)
           if (user == "cross") then
             pl = serAng(0) 
           end 
+          
+          local r = DBsearch(user,"fakedb.csv")
+          if r ~= nil then
+            -- r.user,r.salt,r.hash
+            final_hash = crypto.toHex(crypto.hash("sha512",pass .. r.salt))
+            if (final_hash == r.hash) then
+              print("loggin allowed")
+            else    
+              print("loggin error, wrong password")
+            end
+          else
+            print("loggin error, no user")
+          end
           
           local salt = 1 --getSalt(user)
           local hash = 2 --crypto.hash("SHA512", _GET["pass"]..salt) 
