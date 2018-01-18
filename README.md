@@ -12,23 +12,33 @@ Página que será entregue ao usuário que tentar acessar a porta do HS. Ele nã
 
 ## init.lua
 
-Código da NodeMCU. Se conecta a rede local (sendo possível criar a própria rede) e serve o mobile.html em pedaços. Recebe o usuário e o client-hash,...
+Código da NodeMCU. Se conecta a rede local (sendo possível criar a própria rede) e serve o mobile.html em pedaços. Recebe o usuário e o client-hash, procura em um arquivo se o usuário existe e a senha está correta. Se estiver, abre a trava da porta com um servo motor.
 
-
+Para gravar o firmware
 esptool.py --port /dev/ttyUSB0 write_flash --flash_mode dio --flash_size detect 0x0 /home/certorio/Downloads/nodemcu-master-7-modules-2017-12-27-02-34-19-float.bin 
 
 
-screen /dev/ttyUSB0 115200,cs8
+para enviar todos os arquivos
+```bash
+bash upload.sh
+```
+para enviar um arquivo 
+```bash
 nodemcu-uploader upload init.lua
+```
+para se comunicar por serial
 
+```bash
+screen /dev/ttyUSB0 115200,cs8
+```
 
 # TODO
-* Receber o usuário e o client-hash, pesquisar o usuário, pegar o salt relacionado, fazer server-hash e comparar com o armazenado.
 
-* Código de controle do servo motor
-
-* Código que soe um buzzer 
-
+# TODO
+- [x] Receber o usuário e o client-hash, pesquisar o usuário, pegar o salt relacionado, fazer server-hash e comparar com o armazenado.
+- [x] Código de controle do servo motor
+- [ ] Testar o código do servo motor para evitar bugs
+- [ ] Código que soe um buzzer 
 
 
 
