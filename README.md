@@ -15,6 +15,13 @@ Página que será entregue ao usuário que tentar acessar a porta do HS. Ele nã
 Código da NodeMCU. Se conecta a rede local (sendo possível criar a própria rede) e serve o mobile.html em pedaços. Recebe o usuário e o client-hash,...
 
 
+esptool.py --port /dev/ttyUSB0 write_flash --flash_mode dio --flash_size detect 0x0 /home/certorio/Downloads/nodemcu-master-7-modules-2017-12-27-02-34-19-float.bin 
+
+
+screen /dev/ttyUSB0 115200,cs8
+nodemcu-uploader upload init.lua
+
+
 # TODO
 * Receber o usuário e o client-hash, pesquisar o usuário, pegar o salt relacionado, fazer server-hash e comparar com o armazenado.
 
