@@ -13,6 +13,10 @@ function DBsearch(user_name,dbFile)
 	  local last = ""
 	  while(string.sub(last,#last,#last) ~= "\n" and last ~= nil) do
 	    last = file.readline()
+	    if (last == nil) then
+	      file.close()
+	      return nil --EOF and no result matched
+	    end
 	    result = result .. last
 	  end
 		if result == nil then
@@ -21,6 +25,7 @@ function DBsearch(user_name,dbFile)
 		end
 		user,salt,hash = string.match(result,"(.*),(.*),(.*)\n")
 		if user == user_name then
+			file.close()
 			return {user=user,salt=salt,hash=hash}
 		end
 	end
