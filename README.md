@@ -32,13 +32,4 @@ para se comunicar por serial
 screen /dev/ttyUSB0 115200,cs8
 ```
 
-# TODO
-
-# TODO
-- [x] Receber o usuário e o client-hash, pesquisar o usuário, pegar o salt relacionado, fazer server-hash e comparar com o armazenado.
-- [x] Código de controle do servo motor
-- [ ] Testar o código do servo motor para evitar bugs
-- [ ] Código que soe um buzzer 
-
-
 
