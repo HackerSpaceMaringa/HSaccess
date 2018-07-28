@@ -34,17 +34,8 @@
   document.getElementById("warning").style.display = "none"
   document.getElementById("submission").style.display = "inline"
 
-  /*
- A JavaScript implementation of the SHA family of hashes, as
- defined in FIPS PUB 180-4 and FIPS PUB 202, as well as the corresponding
- HMAC implementation as defined in FIPS PUB 198a
- Copyright Brian Turek 2008-2017
- Distributed under the BSD License
- See http://caligatio.github.com/jsSHA/ for more information
- Several functions taken from Paul Johnston
-*/
 'use strict';(function(K){function x(b,a,d){var e=0,g=[],k=0,f,c,m,h,l,p,t,q,y=!1,u=[],r=[],v,A=!1;d=d||{};f=d.encoding||"UTF8";v=d.numRounds||1;if(v!==parseInt(v,10)||1>v)throw Error("numRounds must a integer >= 1");if(0===b.lastIndexOf("SHA-",0))if(p=function(a,d){return B(a,d,b)},t=function(a,d,g,e){var c,k;if("SHA-384"===b||"SHA-512"===b)c=(d+129>>>10<<5)+31,k=32;else throw Error("Unexpected error in SHA-2 implementation");for(;a.length<=c;)a.push(0);a[d>>>5]|=128<<24-d%32;d=d+g;a[c]=d&4294967295;
-a[c-1]=d/4294967296|0;g=a.length;for(d=0;d<g;d+=k)e=B(a.slice(d,d+k),e,b);if("SHA-384"===b)a=[e[0].a,e[0].b,e[1].a,e[1].b,e[2].a,e[2].b,e[3].a,e[3].b,e[4].a,e[4].b,e[5].a,e[5].b];else if("SHA-512"===b)a=[e[0].a,e[0].b,e[1].a,e[1].b,e[2].a,e[2].b,e[3].a,e[3].b,e[4].a,e[4].b,e[5].a,e[5].b,e[6].a,e[6].b,e[7].a,e[7].b];else throw Error("Unexpected error in SHA-2 implementation");return a},q=function(a){return a.slice()},"SHA-384"===b)l=1024,h=384;else if("SHA-512"===b)l=1024,h=512;else throw Error("Chosen SHA variant is not supported");
+a[c-1]=d/4294967296|0;g=a.length;for(d=0;d<g;d+=k)e=B(a.slice(d,d+k),e,b);if("SHA-384"===b)a=[e[0].a,e[0].b,e[1].a,e[1].b,e[2].a,e[2].b,e[3].a,e[3].b,e[4].a,e[4].b,e[5].a,e[5].b];else if("SHA-512"===b)a=[e[0].a,e[0].b,e[1].a,e[1].b,e[2].a,e[2].b,e[3].a,e[3].b,e[4].a,e[4].b,e[5].a,e[5].b,e[6].a,e[6].b,e[7].a,e[7].b];else throw Error("Unexpected error in SHA-2 implementation");return a},q=function(a){return a.slice()},"SHA-384"===b)l=1024,h=384;else if("SHA-512"===b)l=1024,h=512;
 
 else throw Error("Chosen SHA variant is not supported");m=C(a,f);c=z(b);this.setHMACKey=function(a,d,g){var k;if(!0===y)throw Error("HMAC key already set");if(!0===A)throw Error("Cannot set HMAC key after calling update");f=(g||{}).encoding||"UTF8";d=C(d,f)(a);a=d.binLen;d=d.value;k=l>>>3;g=k/4-1;if(k<a/8){for(d=t(d,a,0,z(b));d.length<=g;)d.push(0);d[g]&=4294967040}else if(k>a/8){for(;d.length<=g;)d.push(0);d[g]&=4294967040}for(a=0;a<=g;a+=1)u[a]=d[a]^909522486,r[a]=d[a]^1549556828;c=p(u,c);e=l;y=
 !0};this.update=function(a){var d,b,n,f=0,h=l>>>5;d=m(a,g,k);a=d.binLen;b=d.value;d=a>>>5;for(n=0;n<d;n+=h)f+l<=a&&(c=p(b.slice(n,n+h),c),f+=l);e+=f;g=b.slice(f>>>5);k=a%l;A=!0};this.getHash=function(a,d){var f,l,m,p;if(!0===y)throw Error("Cannot call getHash after setting HMAC key");m=D(d);switch(a){case "HEX":f=function(a){return E(a,h,m)};break;case "B64":f=function(a){return F(a,h,m)};break;case "BYTES":f=function(a){return G(a,h)};break;case "ARRAYBUFFER":try{l=new ArrayBuffer(0)}catch(w){throw Error("ARRAYBUFFER not supported by this environment");
