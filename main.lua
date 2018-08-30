@@ -96,12 +96,16 @@ function connection(conn)
         final_hash = crypto.toHex(crypto.hash("sha512",pass .. r.salt))
         if (final_hash == r.hash) then
           print("loggin allowed")
+          sec, _, _ = rtctime.get()
+          log("loggin allowed,"..user..","..sec)
           abre_porta()
         else
           print("loggin error, wrong password")
+          log("wrong password,"..user..","..sec)
         end
       else
         print("loggin error, no user")
+          log("loggin error no user, ,"..sec)
         return nil
       end
     elseif(method=="GET")then

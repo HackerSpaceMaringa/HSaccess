@@ -76,7 +76,7 @@ function abre_porta()
   closed_start_position = function()
     pl = serAng(100) --commonly at 100% (maximum angle)
     -- wait 5 seconds
-    alarm_bzz:alarm(5000,tmr.ALARM_SINGLE,
+    alarm_bzz:alarm(500,tmr.ALARM_SINGLE,
     function() 
       open_position()
     end)  
@@ -94,7 +94,7 @@ function abre_porta()
   closed_end_position = function()
     pl = serAng(100) --commonly at 100% (maximum angle)
     -- wait 5 seconds
-    alarm_bzz:alarm(5000,tmr.ALARM_SINGLE,
+    alarm_bzz:alarm(500,tmr.ALARM_SINGLE,
     function()
       cleanup() 
     end)    
