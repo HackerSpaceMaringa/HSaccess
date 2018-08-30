@@ -84,7 +84,7 @@ function connection(conn)
   <title>Acesso - HackerSpace Maringá</title>
   <meta name="description" content="Access page">
   <meta name="author" content="HS Maringa">
-
+</body>
   
   <H1>HackerSpace Maringá</H1><br>
   ]]
