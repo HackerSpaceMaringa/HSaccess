@@ -16,11 +16,11 @@ wifi.sta.getap(1, listap)
 wifi.sta.disconnect()
 
 -- this part is only used the first time you need to connect to a network
-station_cfg={}
-station_cfg.ssid="HUAWEI-hNFT"
-station_cfg.pwd= ""
-station_cfg.auto=true
-set = wifi.sta.config(station_cfg)
+--station_cfg={}
+--station_cfg.ssid=""
+--station_cfg.pwd= ""
+--station_cfg.auto=true
+--set = wifi.sta.config(station_cfg)
 
 wifi.sta.connect()
 print("config ",set)
@@ -63,19 +63,18 @@ function()
 end)
 
 function connection(conn)    
---ARRUME ESSA FUNCAO, NAO COMPILA
   print("   |||   \n")
   local response_local = shallow_copy(response)
   conn:on ("receive",
   function(sck, req)
-    print(req)
+    --print(req)
     local _, _, method, path_vars = string.find(req, "([A-Z]+) (.+) HTTP");
     if(method=="POST")then
       local _, _, user, pass = string.find(req, "user=(.+)&pass=(.+)");
       --local req_tab = split(req,"\n") não existe essa função
       print("peguei do post")
       print(user)
-      print(pass)
+      --print(pass)
       --check if user and pass exist
       local done_html = [[<!doctype html>
 <html lang="en">
@@ -148,6 +147,10 @@ srv:listen(80, connection)
 print("all good")
 
 tmr.create():alarm(30000, tmr.ALARM_AUTO, function()
+--make sure it is closed
+pl = serAng(100)
+gpio.write(pin,gpio.HIGH) tmr.delay(pl) gpio.write(pin,gpio.LOW)
+
 if (wifi.sta.status() ~= wifi.STA_GOTIP) then
   wifi.sta.connect()
 end

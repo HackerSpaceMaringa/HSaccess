@@ -4,7 +4,7 @@ a=file.open("key","r")
 if a then
   global_key = a:read(512)
   a:close()
-else
+end
 
 node.compile("aux.lua")
 collectgarbage()
