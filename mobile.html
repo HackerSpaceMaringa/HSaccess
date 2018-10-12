@@ -1,12 +1,19 @@
-<!doctype html><html lang="en">
-<head><meta charset="utf-8"></head>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<body><title>Acesso - HackerSpace Maringá</title>
-  <meta name="description" content="Access page"><meta name="author" content="HS Maringa">
+<!doctype html>
 
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+</head>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<body>
+  <title>Acesso - HackerSpace Maringá</title>
+  <meta name="description" content="Access page">
+  <meta name="author" content="HS Maringa">
+
+  
   <H1>HackerSpace Maringá</H1><br>
   <p id="warning"> Without JavaScript you cannot login, because it is insecure
-  <form id="submission" style="display: none;" name="login" method="post">
+  <form method='post' id="submission" style="display: none;" name="login">
     Nome: <input type="text" name="user" tabindex=1> 
     <input value="Enviar" type="submit" onclick="return check(this.form)" tabindex=3><br>
     Senha: <input type="password" name="pass" tabindex=2> <br>

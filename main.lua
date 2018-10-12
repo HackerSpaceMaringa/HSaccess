@@ -1,8 +1,9 @@
 
 function log(phrase)
-  if file.open("access.log","a") then
-    file.write(phrase.."\n")
-    file.close()
+  a=file.open("access.log","a")
+  if a then
+    a:write(phrase.."\n")
+    a:close()
   else
     print("não foi possível registrar o log")
   end
@@ -15,11 +16,11 @@ wifi.sta.getap(1, listap)
 wifi.sta.disconnect()
 
 -- this part is only used the first time you need to connect to a network
---station_cfg={}
---station_cfg.ssid="HUAWEI-hNFT"
---station_cfg.pwd= ""
---station_cfg.auto=true
---set = wifi.sta.config(station_cfg)
+station_cfg={}
+station_cfg.ssid="HUAWEI-hNFT"
+station_cfg.pwd= ""
+station_cfg.auto=true
+set = wifi.sta.config(station_cfg)
 
 wifi.sta.connect()
 print("config ",set)
@@ -51,6 +52,8 @@ function()
   if time_repeat<1 then
     if (gpio.read(pin_bot))==0 then
       print("abre porta pelo botao")
+      sec, _, _ = rtctime.get()
+      log("door opened through the button,,"..sec)
       time_repeat = 15
       abre_porta()
     end
@@ -109,17 +112,31 @@ function connection(conn)
         return nil
       end
     elseif(method=="GET")then
-      print("é um get")
-      local function sender (sck)
-        if #response_local>0 then
-          sck:send(table.remove(response_local,1))
-        else
-          sck:close()
-          collectgarbage();
-        end
-      end
-      sck:on("sent", sender)
-      sender(sck)
+	if(path_vars=="/")then
+      		print("é um get /")
+      		local function sender (sck)
+        		if #response_local>0 then
+          			sck:send(table.remove(response_local,1))
+        		else
+          			sck:close()
+          			collectgarbage();
+        		end
+      		end
+      		sck:on("sent", sender)
+      		sender(sck)
+	elseif(path_vars=="/log")then
+  		b=file.open("access.log","r")
+		if(b:seek("end",-512)==nil)then
+	      		print("file too short to be sent")
+	   	else
+		      local str_tmp = b:read(512)
+		      local str_tmp = crypto.toHex(crypto.encrypt("AES-CBC", global_key, str_tmp))
+          	      collectgarbage();
+		      sck:on("sent",function(sck) sck:close() end)
+		      sck:send(str_tmp)
+	   	end
+		b:close()
+	end
     else
       print("é um outro")
     end

@@ -5,6 +5,6 @@ nodemcu-uploader download access.log
 ##Breaks the html into smaller chucks and put them in lua strings
 python3 breakHTML.py mobile.html 1500 mobile.lua
 ##sends all the files
-nodemcu-uploader upload init.lua aux.lua main.lua mobile.lua fakedb.csv
+nodemcu-uploader upload init.lua aux.lua main.lua mobile.lua fakedb.csv key
 
 
