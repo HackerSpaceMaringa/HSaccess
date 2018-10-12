@@ -15,6 +15,11 @@
   <link rel="stylesheet" href="css/styles.css?v=1.0">
 
   <H1>HackerSpace Maringá</H1>
+
+  <H2>Banco de usuários</H2>
+
+<input value="base de usuários" type="file" id="input" onchange="loadBase(this.files)">
+ 
   <H2>Cadastro de senha</H2>
   <form name="login">
     Nome: <input type="text" name="user" tabindex=1> <br>
@@ -32,11 +37,9 @@
     input {font-size: 5vmin;text-align: center}
     textarea {font-size: 2vmin;display: block;margin-left: auto;margin-right: auto;}
   </style>
-  
 
-  <!-- https://github.com/Caligatio/jsSHA/blob/master/src/sha512.js -->
 <script language="javascript">
-  /*
+  /*<!-- https://github.com/Caligatio/jsSHA/blob/master/src/sha512.js -->
  A JavaScript implementation of the SHA family of hashes, as
  defined in FIPS PUB 180-4 and FIPS PUB 202, as well as the corresponding
  HMAC implementation as defined in FIPS PUB 198a
@@ -93,10 +96,71 @@ new b(c[42],3505952657),new b(c[43],106217008),new b(c[44],3606008344),new b(c[4
 3815920427),new b(3391569614,3928383900),new b(3515267271,566280711),new b(3940187606,3454069534),new b(4118630271,4000239992),new b(116418474,1914138554),new b(174292421,2731055270),new b(289380356,3203993006),new b(460393269,320620315),new b(685471733,587496836),new b(852142971,1086792851),new b(1017036298,365543100),new b(1126000580,2618297676),new b(1288033470,3409855158),new b(1501505948,4234509866),new b(1607167915,987167468),new b(1816402316,1246189591)];"function"===typeof define&&define.amd?
 define(function(){return x}):"undefined"!==typeof exports?("undefined"!==typeof module&&module.exports&&(module.exports=x),exports=x):K.jsSHA=x})(this);
 
-var senhaRuim = x => false //colocar uma comparação com dicionário e tamnhano mínimo
+function senhaRuim(x) {
+  if(x.length<7){
+    return true
+  }
+  var a = 'abcdefghijklmnopqrstuvwxyz'
+  var A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  var num = '0123456789'
+  var not_special = a+A+num
+  var points=0
+  for(var i in x){
+    if(a.indexOf(x[i])!==-1){points=points|1<<0}
+    if(A.indexOf(x[i])!==-1){points=points|1<<1}
+    if(num.indexOf(x[i])!==-1){points=points|1<<2}
+    if(not_special.indexOf(x[i])==-1){points=points|1<<3}
+  }
+  points = ((points&1<<0)>>0)+((points&1<<1)>>1)+((points&1<<2)>>2)+((points&1<<3)>>3)
+  if(points>1){
+    return false
+  }else{
+    return true
+  }
+}
+//var selectedFile = document.getElementById('input').files[0];
+//var objectURL = window.URL.createObjectURL(selectedFile);
+//document.getElementById("file").innerHTML = objectURL+"\n"
+
+var usuarios
+
+var reader = new FileReader();
+  reader.onload = function(e) {
+    var contents = e.target.result;
+    // Display file content
+    var array = contents.split('\n')
+    //console.log(array)
+    usuarios = []
+    for(var i in array){
+      usuarios.push(array[i].split(",")[0])
+    }
+    console.log(usuarios)
+  };
+  
+
+
+function loadBase(db){
+  db=db[0]
+  if(!db){
+    return
+  }
+  console.log(db.name,db.size,db.type)
+  reader.readAsText(db);
+}
+
 
 function check(form) {
   //não deixar senhas com "," no usuário
+  
+  if(typeof usuarios == 'undefined'){
+    alert("Selecione o csv com os usuários")
+    return false
+  }
+  
+  if(usuarios.indexOf(form.user.value) !== -1){
+    alert("Usuário já existe, use outro nome")
+    return false
+  }
 
   if(!(form.pass.value == form.passRep.value) ){
     alert("Senhas diferentes")

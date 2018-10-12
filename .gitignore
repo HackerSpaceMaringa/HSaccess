@@ -1,2 +1,3 @@
-fakedb.csv
+*.csv
 mobile.lua
+key
