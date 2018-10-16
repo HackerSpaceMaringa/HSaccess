@@ -1,5 +1,5 @@
 pin = 0;
-pin_motor = 3;
+pin_motor = 2;
 last_motor_use = 0;
 motor_rest_time = 120;
 
