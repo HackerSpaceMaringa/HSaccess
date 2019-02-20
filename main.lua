@@ -147,13 +147,18 @@ srv:listen(80, connection)
 print("all good")
 
 tmr.create():alarm(30000, tmr.ALARM_AUTO, function()
---make sure it is closed
-pl = serAng(100)
-gpio.write(pin,gpio.HIGH) tmr.delay(pl) gpio.write(pin,gpio.LOW)
+  local sec, _, _ = rtctime.get()
+  if last_motor_use>sec+10 then
+     sec, _, _ = rtctime.get()
+     log("motor time exceeded,,"..sec) 
+     gpio.write(pin_motor,gpio.LOW) 
+  end
+  --make sure it is closed
+  gpio.write(pin,gpio.HIGH) tmr.delay(serAng(100)) gpio.write(pin,gpio.LOW)
 
-if (wifi.sta.status() ~= wifi.STA_GOTIP) then
-  wifi.sta.connect()
-end
+  if (wifi.sta.status() ~= wifi.STA_GOTIP) then
+    wifi.sta.connect()
+  end
 end)
 
 

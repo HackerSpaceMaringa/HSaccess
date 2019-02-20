@@ -3,6 +3,8 @@ pin_motor = 2;
 last_motor_use = 0;
 motor_rest_time = 120;
 
+porta_abrindo = false 
+
 pl  = 12000;
 gpio.mode(pin, gpio.OUTPUT);
 servo = {min=500,max=2400}
@@ -68,6 +70,12 @@ function serAng( x )
 end
 
 function abre_porta()
+  if porta_abrindo == true then
+    return
+  end
+  porta_abrindo = true
+  
+
   local alarm_bzz=tmr.create()
   local alarm_pwm=tmr.create()
   local alarm_motor=tmr.create()
@@ -97,7 +105,7 @@ function abre_porta()
       if last_motor_use + motor_rest_time < sec then
         last_motor_use = sec 
         gpio.write(pin_motor,gpio.HIGH)
-        alarm_motor:alarm(8000,tmr.ALARM_SINGLE,
+        alarm_motor:alarm(7000,tmr.ALARM_SINGLE,
         function()
           gpio.write(pin_motor,gpio.LOW)  
         end)
@@ -121,7 +129,9 @@ function abre_porta()
   
   cleanup = function()
     alarm_bzz:unregister()
-    alarm_pwm:unregister()    
+    alarm_pwm:unregister()
+    alarm_motor:unregister()
+    porta_abrindo = false
   end
   
   startPWM()
