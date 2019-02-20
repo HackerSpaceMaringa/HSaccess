@@ -4,6 +4,7 @@ a=file.open("key","r")
 if a then
   global_key = a:read(512)
   a:close()
+  global_key = global_key:sub(1,#global_key-1)
 end
 
 node.compile("aux.lua")

@@ -1,3 +1,5 @@
 *.csv
 mobile.lua
 key
+*.log
+*.bkp
