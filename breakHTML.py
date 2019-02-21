@@ -54,7 +54,7 @@ with open(page_to_break, 'r') as content_file:
 			last  = toBreak[key] 
 			first = 0 if key == 0  else toBreak[key-1]
 			result_file.write(webpage[first:last])
-			result_file.write(" ]] \n")
+			result_file.write("\n]]\n")
 		webpages = webpages[:-1]
 		result_file.write("response = {")
 		result_file.write(webpages)

@@ -44,13 +44,11 @@ end)
 
 sntp.sync(nil, nil, nil, 1)
 
-pin_bot = 7
 time_repeat = 0;
-gpio.mode(7,gpio.INPUT,gpio.PULLUP)
 local alarm_porta = tmr.create():alarm(2000, tmr.ALARM_AUTO,
 function()
   if time_repeat<1 then
-    if (gpio.read(pin_bot))==0 then
+    if (gpio.read(pin_bot))==1 then
       print("abre porta pelo botao")
       sec, _, _ = rtctime.get()
       log("door opened through the button,,"..sec)
@@ -96,9 +94,9 @@ function connection(conn)
       if r ~= nil then
         -- r.user,r.salt,r.hash
         final_hash = crypto.toHex(crypto.hash("sha512",pass .. r.salt))
+        sec, _, _ = rtctime.get()        
         if (final_hash == r.hash) then
           print("loggin allowed")
-          sec, _, _ = rtctime.get()
           log("loggin allowed,"..user..","..sec)
           abre_porta()
         else

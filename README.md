@@ -1,5 +1,13 @@
 # HSaccess
 
+
+## Atualizações
+- O botão mudou de comumente high para low.
+- O sinal que vai para o servo teve de ser invertido, pois passa por um buffer inversor.
+- Vários botões tiveram suas funções trocadas.
+- redução da página mobile em 80%.
+
+
 Códigos para cadastrar usuários que possam entrar no HS Maringá e para permitir o acesso, feito via WiFi com uma NodeMCU
  
 ## cadastro.html
@@ -22,7 +30,7 @@ Para gravar o firmware
 esptool.py --port /dev/ttyUSB0 write_flash --flash_mode dio --flash_size detect 0x0 /nodemcu-float.bin 
 ```
 
-## exemplo de tabela de usuários
+## Exemplo de tabela de usuários
 ```csv
 A,1b1aebb5ef08cc16c9f181e2d36d129c729c9b9e49feeabf9c3aa5b406da92c9ef97cf6f52276643878ffd9f85e5d3e1d569b0d1f31c9b7656b46186a44c022,2bf6b81d16b09953e128844643f5c22e609358c60b4f7eca251491efc8be93c1979b867619ef39bdabdc851d587b0f30666092b63aba5a9fd69c20fd1830742f
 B,1318304c720f6cd8c9407973bbabeadd9f966c1859bae46394eb6b2d72b73b7af2d3e69c9532602872d5927041ab908a2e5bc7d5d63b95197a7451361d,976fa4001f3ccd5aa1015d2a61d505079e6199c84c9d02129d2bebcb6dee2d3a0e981e8ca016096a3483d75f4050131756d2b06990a60ad4ed9770698ce2a2de
@@ -40,6 +48,6 @@ nodemcu-uploader upload init.lua
 para se comunicar por serial
 
 ```bash
-screen /dev/ttyUSB0 115200,cs8
+miniterm /dev/ttyUSB0 115200,cs8
 ```
 

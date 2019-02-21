@@ -1,12 +1,11 @@
-pin = 0;
-pin_motor = 2;
+
 last_motor_use = 0;
 motor_rest_time = 120;
 
 porta_abrindo = false 
 
 pl  = 12000;
-gpio.mode(pin, gpio.OUTPUT);
+gpio.mode(pin_pwm, gpio.OUTPUT);
 servo = {min=500,max=2400}
 
 done_page=[[<!doctype html>
@@ -84,7 +83,7 @@ function abre_porta()
   startPWM = function()
     alarm_pwm:alarm(20, 1, 
     function() 
-      gpio.write(pin,gpio.HIGH) tmr.delay(pl) gpio.write(pin,gpio.LOW)
+      gpio.write(pin_pwm,gpio.LOW) tmr.delay(pl) gpio.write(pin_pwm,gpio.HIGH)
     end)
   end
   
