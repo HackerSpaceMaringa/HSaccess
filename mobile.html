@@ -130,11 +130,11 @@ margin-right: auto;text-align: center;font-family: ubuntu;
     }
     input {font-size: 5vmin;border-radius: 20px;background-color: black;color: whitesmoke;
 	border-style: unset;text-align: center; width: 70vw;height: 6vh;
-}}
+}
     textarea {font-size: 2vmin;display: block;margin-left: auto;margin-right: auto;}
   </style>
 
-
+<script src="https://cdn.jsdelivr.net/gh/emn178/js-sha512/src/sha512.js"></script>
 <script language="javascript">
   document.getElementById("warning").style.display = "none";
   document.getElementById("submission").style.display = "inline";
@@ -154,9 +154,13 @@ function hexString(buffer) {
 
   const encoder = new TextEncoder();
   const data = encoder.encode(form.pass.value + form.user.value.repeat(10));
-  await window.crypto.subtle.digest('SHA-512', data).then(digestValue => {
-    form.pass.value = hexString(digestValue);
-  });
+  if(window.crypto.subtle){
+    await window.crypto.subtle.digest('SHA-512', data).then(digestValue => {
+      form.pass.value = hexString(digestValue);
+    });
+  }else{
+    form.pass.value = sha512(form.pass.value + form.user.value.repeat(10));
+  }
   alert("Se a senha estiver correta, você ouvirá um som e a porta abrirá")
   document.getElementById('submission').submit()
   }

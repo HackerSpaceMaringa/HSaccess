@@ -152,7 +152,7 @@ tmr.create():alarm(30000, tmr.ALARM_AUTO, function()
      gpio.write(pin_motor,gpio.LOW) 
   end
   --make sure it is closed
-  gpio.write(pin,gpio.HIGH) tmr.delay(serAng(100)) gpio.write(pin,gpio.LOW)
+  gpio.write(pin_pwm,gpio.HIGH) tmr.delay(serAng(100)) gpio.write(pin_pwm,gpio.LOW)
 
   if (wifi.sta.status() ~= wifi.STA_GOTIP) then
     wifi.sta.connect()
