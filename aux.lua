@@ -1,6 +1,6 @@
 
 last_motor_use = 0;
-motor_rest_time = 120;
+motor_rest_time = 10;
 
 porta_abrindo = false 
 
@@ -104,14 +104,14 @@ function abre_porta()
       if last_motor_use + motor_rest_time < sec then
         last_motor_use = sec 
         gpio.write(pin_motor,gpio.HIGH)
-        alarm_motor:alarm(7000,tmr.ALARM_SINGLE,
+        alarm_motor:alarm(3000,tmr.ALARM_SINGLE,
         function()
           gpio.write(pin_motor,gpio.LOW)  
         end)
       end
     end)
     -- wait 20 seconds
-    alarm_bzz:alarm(20000,tmr.ALARM_SINGLE,
+    alarm_bzz:alarm(4000,tmr.ALARM_SINGLE,
     function()
       closed_end_position() 
     end)
