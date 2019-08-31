@@ -3,3 +3,4 @@ mobile.lua
 key
 *.log
 *.bkp
+*.bin
