@@ -68,76 +68,82 @@ function connection(conn)
     --print(req)
     local _, _, method, path_vars = string.find(req, "([A-Z]+) (.+) HTTP");
     if(method=="POST")then
-      local _, _, user, pass = string.find(req, "user=(.+)&pass=(.+)");
-      --local req_tab = split(req,"\n") não existe essa função
-      print("peguei do post")
-      print(user)
-      --print(pass)
-      --check if user and pass exist
-      local done_html = [[<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-</head>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<body>
-  <title>Acesso - HackerSpace Maringá</title>
-  <meta name="description" content="Access page">
-  <meta name="author" content="HS Maringa">
-</body>
-  
-  <H1>HackerSpace Maringá</H1><br>
-  ]]
-      sck:on("sent", function(sock) sock:close() end)
-      sck:send(done_html)
-      local r = DBsearch(user,"fakedb.csv")
-      if r ~= nil then
-        -- r.user,r.salt,r.hash
-        final_hash = crypto.toHex(crypto.hash("sha512",pass .. r.salt))
-        sec, _, _ = rtctime.get()        
-        if (final_hash == r.hash) then
-          print("loggin allowed")
-          log("loggin allowed,"..user..","..sec)
-          abre_porta()
-        else
-          print("loggin error, wrong password")
-          log("wrong password,"..user..","..sec)
-        end
+      if(path_vars=="/ping")then
+        -- PING request
+        sck:on("sent", function(sock) sock:close() end)
+        sck:send("pong")
       else
-        print("loggin error, no user")
+        local _, _, user, pass = string.find(req, "user=(.+)&pass=(.+)");
+        --local req_tab = split(req,"\n") não existe essa função
+        print("peguei do post")
+        print(user)
+        --print(pass)
+        --check if user and pass exist
+        local done_html = [[<!doctype html>
+        <html lang="en">
+        <head>
+        <meta charset="utf-8">
+        </head>
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <body>
+        <title>Acesso - HackerSpace Maringá</title>
+        <meta name="description" content="Access page">
+        <meta name="author" content="HS Maringa">
+        </body>
+
+        <H1>HackerSpace Maringá</H1><br>
+        ]]
+        sck:on("sent", function(sock) sock:close() end)
+        sck:send(done_html)
+        local r = DBsearch(user,"fakedb.csv")
+        if r ~= nil then
+          -- r.user,r.salt,r.hash
+          final_hash = crypto.toHex(crypto.hash("sha512",pass .. r.salt))
+          sec, _, _ = rtctime.get()        
+          if (final_hash == r.hash) then
+            print("loggin allowed")
+            log("loggin allowed,"..user..","..sec)
+            abre_porta()
+          else
+            print("loggin error, wrong password")
+            log("wrong password,"..user..","..sec)
+          end
+        else
+          print("loggin error, no user")
           log("loggin error no user, ,"..sec)
-        return nil
+          return nil
+        end
       end
     elseif(method=="GET")then
-	if(path_vars=="/")then
-      		print("é um get /")
-      		local function sender (sck)
-        		if #response_local>0 then
-          			sck:send(table.remove(response_local,1))
-        		else
-          			sck:close()
-          			collectgarbage();
-        		end
-      		end
-      		sck:on("sent", sender)
-      		sender(sck)
-	elseif(path_vars=="/log")then
-  		b=file.open("access.log","r")
-		if(b:seek("end",-512)==nil)then
-	      		print("file too short to be sent")
-	   	else
-		      local str_tmp = b:read(512)
-		      local str_tmp = crypto.toHex(crypto.encrypt("AES-CBC", global_key, str_tmp))
-          	      collectgarbage();
-		      sck:on("sent",function(sck) sck:close() end)
-		      sck:send(str_tmp)
-	   	end
-		b:close()
-	end
-    else
-      print("é um outro")
+      if(path_vars=="/")then
+        print("é um get /")
+        local function sender (sck)
+          if #response_local>0 then
+            sck:send(table.remove(response_local,1))
+          else
+            sck:close()
+            collectgarbage();
+          end
+        end
+        sck:on("sent", sender)
+        sender(sck)
+      elseif(path_vars=="/log")then
+        b=file.open("access.log","r")
+        if(b:seek("end",-512)==nil)then
+        print("file too short to be sent")
+      else
+        local str_tmp = b:read(512)
+        local str_tmp = crypto.toHex(crypto.encrypt("AES-CBC", global_key, str_tmp))
+        collectgarbage();
+        sck:on("sent",function(sck) sck:close() end)
+        sck:send(str_tmp)
+      end
+      b:close()
     end
-  end)  
+  else
+    print("é um outro")
+  end
+end)  
 end
 
 srv=net.createServer(net.TCP)
@@ -147,9 +153,9 @@ print("all good")
 tmr.create():alarm(30000, tmr.ALARM_AUTO, function()
   local sec, _, _ = rtctime.get()
   if last_motor_use>sec+10 then
-     sec, _, _ = rtctime.get()
-     log("motor time exceeded,,"..sec) 
-     gpio.write(pin_motor,gpio.LOW) 
+    sec, _, _ = rtctime.get()
+    log("motor time exceeded,,"..sec) 
+    gpio.write(pin_motor,gpio.LOW) 
   end
   --make sure it is closed
   gpio.write(pin_pwm,gpio.HIGH) tmr.delay(serAng(100)) gpio.write(pin_pwm,gpio.LOW)
